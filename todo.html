@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #todoList {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+        .todo-item.completed {
+            text-decoration: line-through;
+            background: #d8ffd8;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List Application</h1>
+    <input type="text" id="taskInput" placeholder="Add a new task..." />
+    <button id="addTaskButton">Add Task</button>
+    <ul id="todoList"></ul>
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addTaskButton = document.getElementById('addTaskButton');
+        const todoList = document.getElementById('todoList');
+
+        // Load tasks from local storage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.forEach(task => displayTask(task));
+
+        addTaskButton.addEventListener('click', () => {
+            if (taskInput.value) {
+                const newTask = {
+                    id: Date.now(),
+                    text: taskInput.value,
+                    completed: false
+                };
+                tasks.push(newTask);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                displayTask(newTask);
+                taskInput.value = '';
+            }
+        });
+
+        function displayTask(task) {
+            const li = document.createElement('li');
+            li.classList.add('todo-item');
+            li.innerHTML = `
+                <span>${task.text}</span>
+                <span>
+                    <button onclick="deleteTask(${task.id})">Delete</button>
+                    <button onclick="toggleComplete(${task.id}, this)">${task.completed ? 'Undo' : 'Complete'}</button>
+                </span>
+            `;
+            todoList.appendChild(li);
+            if (task.completed) li.classList.add('completed');
+        }
+
+        window.deleteTask = function(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        };
+
+        window.toggleComplete = function(id, button) {
+            const task = tasks.find(task => task.id === id);
+            task.completed = !task.completed;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        };
+
+        function renderTasks() {
+            todoList.innerHTML = '';
+            tasks.forEach(task => displayTask(task));
+        }
+    </script>
+</body>
+</html>
