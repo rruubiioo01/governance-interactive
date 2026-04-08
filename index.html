@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Voting Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .module { padding: 20px; margin: 10px; border-radius: 8px; }
+        #introduction { background-color: lightgrey; text-align: center; padding: 50px; }
+        #voting-section { display: none; }
+        .btn { background-color: blue; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:hover { background-color: darkblue; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fade { animation: fadeIn 1s; }
+    </style>
+</head>
+<body>
+
+<div id="introduction" class="fade">
+    <h1>Bienvenido a la Plataforma de Votación Interactiva</h1>
+    <p>Descubre las mejores propuestas y vota por tus favoritas.</p>
+    <button class="btn" onclick="showVotingSection()">Comenzar Votación</button>
+</div>
+
+<div id="voting-section" class="fade">
+    <h2>Votación</h2>
+    <div class="module" style="background-color: purple;">Module 1: Legal Guardian Digital</div>
+    <div class="module" style="background-color: blue;">Module 2: Entiende tu Derecho</div>
+    <div class="module" style="background-color: green;">Module 3: Reputación Verificada</div>
+    <div class="module" style="background-color: orange;">Module 4: IA sin Filtros</div>
+    <div class="module" style="background-color: pink;">Module 5: Testamento Digital</div>
+    <div class="module" style="background-color: red;">Module 6: Escáner de Exposición</div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    function showVotingSection() {
+        document.getElementById('introduction').style.display = 'none';
+        document.getElementById('voting-section').style.display = 'block';
+    }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Module 1', 'Module 2', 'Module 3', 'Module 4', 'Module 5', 'Module 6'],
+            datasets: [{
+                label: 'Votos',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'purple', 'blue', 'green', 'orange', 'pink', 'red'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
